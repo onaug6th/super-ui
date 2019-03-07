@@ -28,7 +28,7 @@
           v-for="(tr, trIndex) in config.data"
           :key="trIndex"
           :data-index="trIndex"
-          @click="singleSelect($event, tr)"
+          @click="rowClick($event, tr)"
         >
           <td v-if="config.checkbox">
             <input type="checkbox" v-model="tr.isChecked" data-checkbox="true">
@@ -75,14 +75,16 @@
 import pagination from "../pagination";
 
 export default {
-  name: "superTable",
+  name: "STable",
   props: {
     config: {
       type: Object,
       required: true,
-      default: {
-        colOption: [],
-        data: []
+      default() {
+        return {
+          colOption: [],
+          data: []
+        };
       }
     }
   },
@@ -156,11 +158,11 @@ export default {
       this.recordCheckedData();
     },
     /**
-     * 单个选择
+     * 单行点击
      * @param {event} e 事件对象
      * @param {object} tr 行对象
      */
-    singleSelect(e, tr) {
+    rowClick(e, tr) {
       const target = e.target;
       const targetName = target.tagName;
 
@@ -172,7 +174,7 @@ export default {
       ) {
         this.$set(tr, "isChecked", !tr.isChecked);
       }
-      //  行点击
+      //  内容点击
       else if (targetName == "TD") {
         this.config.clickToSelect && this.$set(tr, "isChecked", !tr.isChecked);
       }
@@ -186,7 +188,7 @@ export default {
           answer = false;
         }
       });
-      answer ? (this.isCheckedAll = true) : (this.isCheckedAll = false);
+      this.isCheckedAll = answer;
     },
     /**
      * 记录选中的数据

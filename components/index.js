@@ -1,14 +1,18 @@
-import pagination from './pagination/index.vue';
-import superTable from './table';
+import pagination from './pagination';
+import table from './table';
+import dropdown from './dropdown';
+import select from './select';
 
 const components = [
   pagination,
-  superTable
+  table,
+  dropdown,
+  select
 ];
 
 const install = Vue => {
   if (install.installed) {
-    return
+    return;
   }
   components.forEach(Component => {
     Vue.component(Component.name, Component);
@@ -21,7 +25,10 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export {
-  pagination
+  pagination,
+  table,
+  dropdown,
+  select
 }
 
 export default {

@@ -4,12 +4,13 @@
 
 ### 组件列表
 
-- [x] 分页
-- [x] 通用表格
+- [x] pagination分页组件
+- [x] table通用表格
+- [x] select选择器
+- [x] dropdown下拉菜单
 - [ ] Toast弹窗
-- [ ] selectPicker
-- [ ] 模态框
-- [ ] 表单
+- [ ] selectPicker选择弹窗
+- [ ] modal模态框
 
 ### 启动
 
@@ -35,3 +36,6 @@ npm run dev:build
 ```
 npm run package
 ```
+
+### 结束
+目前仓库处于开发中的情况，如发现问题欢迎在issue中提出，如果有比较好的问题/知识点/指正，也欢迎提 PR。
