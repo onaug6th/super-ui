@@ -1,0 +1,52 @@
+{
+  "name": "super-ui",
+  "version": "0.0.1",
+  "description": "一闲下来就造轮子的轮子合集",
+  "license": "MIT",
+  "author": "onaug6th",
+  "main": "package/super-ui.umd.min.js",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "dev:build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "package": "vue-cli-service build --target lib --dest package components/index.js",
+    "package:publish": "npm run package && npm publish"
+  },
+  "repository": "https://github.com/onaug6th/super-ui",
+  "dependencies": {
+    "vue": "^2.5.21",
+    "vue-router": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "vue-template-compiler": "^2.5.21",
+    "node-sass": "4.9.0",
+    "sass-loader": "7.0.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
