@@ -1,52 +1,32 @@
 {
-  "name": "super-ui",
-  "version": "0.0.1",
-  "description": "一闲下来就造轮子的轮子合集",
-  "license": "MIT",
-  "author": "onaug6th",
-  "main": "package/super-ui.umd.min.js",
+  "name": "cn.vuejs.org",
+  "private": true,
+  "hexo": {
+    "version": "3.7.1"
+  },
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "dev:build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "package": "vue-cli-service build --target lib --dest package components/index.js",
-    "package:publish": "npm run package && npm publish"
+    "start": "hexo server",
+    "build": "node pre-deploy.js && hexo clean && hexo generate",
+    "deploy": "npm run build && hexo deploy"
   },
-  "repository": "https://github.com/onaug6th/super-ui",
+  "engines": {
+    "node": ">=8.9.0"
+  },
   "dependencies": {
-    "vue": "^2.5.21",
-    "vue-router": "^3.0.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.2.0",
-    "@vue/cli-plugin-eslint": "^3.2.0",
-    "@vue/cli-service": "^3.2.0",
-    "vue-template-compiler": "^2.5.21",
-    "node-sass": "4.9.0",
-    "sass-loader": "7.0.1"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+    "hexo": "^3.6.0",
+    "hexo-deployer-git": "0.3.1",
+    "hexo-generator-alias": "git+https://github.com/chrisvfritz/vuejs.org-hexo-generator-alias.git",
+    "hexo-generator-archive": "^0.1.5",
+    "hexo-generator-category": "^0.1.3",
+    "hexo-generator-feed": "^1.2.2",
+    "hexo-generator-index": "^0.2.1",
+    "hexo-generator-tag": "^0.2.0",
+    "hexo-offline": "^0.2.3",
+    "hexo-renderer-ejs": "^0.3.1",
+    "hexo-renderer-marked": "^0.3.0",
+    "hexo-renderer-stylus": "^0.3.3",
+    "hexo-server": "^0.3.1",
+    "hoek": "^5.0.3",
+    "request": "^2.85.0"
+  }
 }
