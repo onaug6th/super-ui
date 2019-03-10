@@ -1,7 +1,7 @@
 <template>
   <div>
     <s-pagination :config="config.pagination"></s-pagination>
-    <s-select></s-select>
+    <s-select :config="config.select"></s-select>
     <s-dropdown :config="config.dropdown" @selected="dropdownSelected"></s-dropdown>
     <s-table :config="config.table"></s-table>
   </div>
@@ -19,6 +19,26 @@ export default {
           pageSize: 10,
           total: 100,
           layout: "total,sizes,jumper"
+        },
+
+        select: {
+          label: "",
+          value: "",
+          list: [
+            {
+              key: "1",
+              value: "男"
+            },
+            {
+              key: "0",
+              value: "女"
+            },
+            {
+              key: "3",
+              divider: true,
+              value: "未知"
+            }
+          ]
         },
 
         dropdown: {

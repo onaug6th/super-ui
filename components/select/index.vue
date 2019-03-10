@@ -1,10 +1,10 @@
 <template>
   <div role="presentation" class="dropdown open" v-clickoutside="clickoutside">
     <a class="dropdown-toggle" role="button" @click="toggleMenu(true)">
-      {{config.label}}
+      {{countSelectText()}}
       <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" v-show="config.isOpen">
+    <ul class="dropdown-menu" v-show="isOpen">
       <li v-for="(item, index) in config.list" :key="index" @click="selectItem(item)">
         <div v-if="item.divider" role="separator" class="divider"></div>
         <a :data-index="index">{{item.value}}</a>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Clickoutside from '../utils/clickoutside';
+import Clickoutside from "../utils/clickoutside";
 
 export default {
   name: "SSelect",
@@ -24,9 +24,8 @@ export default {
       required: false,
       default() {
         return {
-          label: "选择框",
+          label: "请选择",
           value: "",
-          isOpen: false,
           list: []
         };
       }
@@ -34,29 +33,49 @@ export default {
   },
   directives: { Clickoutside },
   data() {
-    return {};
+    return {
+      isOpen: false,
+      selected: ""
+    };
   },
   computed: {},
+  created() {},
   methods: {
     /**
      * 切换打开菜单
      * @param {string} type 类型
      */
     toggleMenu(type) {
-      this.config.isOpen = type;
+      this.isOpen = type;
     },
     /**
      * 选中某一行
      * @param {object} item 当前行对象
      */
     selectItem(item) {
-      this.$emit("selected", item.key, item);
+      if (this.selected.key == item.key) {
+        this.selected = "";
+      } else {
+        this.selected = item;
+        this.config.value = item.key;
+        this.$emit("selected", item.key, item);
+      }
       this.toggleMenu(false);
+    },
+    /**
+     * 计算显示的文字
+     */
+    countSelectText() {
+      if (this.selected.key) {
+        return this.selected.value;
+      } else {
+        return this.config.label || "请选择";
+      }
     },
     /**
      * 点击了绑定元素以外时的回调事件
      */
-    clickoutside(){
+    clickoutside() {
       this.toggleMenu(false);
     }
   }
