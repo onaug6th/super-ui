@@ -1,5 +1,5 @@
 ---
-title: 组件注册
+title: 分页组件
 type: guide
 order: 101
 ---
