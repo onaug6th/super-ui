@@ -71,34 +71,39 @@ export default {
   props: {
     config: {
       type: Object,
-      required: true,
       default() {
-        return {
-          prevText: "前页",
-          nextText: "后页",
-          page: 1,
-          pageSize: 10,
-          total: 0,
-          totalPages: 0,
-          layout: "total,sizes,jumper"
-        };
+        return {};
       }
     }
+  },
+  created() {
+    const cfg = this.config;
+    const default_config =  {
+        prevText: "前页",
+        nextText: "后页",
+        page: 1,
+        pageSize: 10,
+        total: 0,
+        totalPages: 0,
+        layout: ""
+      }
+
+    for(let i in default_config){
+      !cfg[i] && (this.$set(cfg, i, default_config[i]));
+    }
+
+    cfg.totalPages = cfg.totalPages || Math.ceil(cfg.total / cfg.pageSize);
   },
   data() {
     return {};
   },
   watch: {
-    page() {
+    currentPage() {
       this.$emit("pageChange", this.config.page, this.config);
     }
   },
-  created() {
-    const cfg = this.config;
-    cfg.totalPages = cfg.totalPages || Math.ceil(cfg.total / cfg.pageSize);
-  },
   computed: {
-    page() {
+    currentPage() {
       return this.config.page;
     },
     pageList() {
@@ -113,6 +118,13 @@ export default {
     }
   },
   methods: {
+    setConfig(attr){
+      const that = this;
+      const cfg = that.config;
+      attr.forEach(item => {
+        that[item] && (cfg[item] = that[item]);
+      });
+    },
     /**
      * 布局包括
      * @param {string} name 布局名称
@@ -144,7 +156,7 @@ export default {
      */
     jumpTo($event) {
       this.pageTo($event.target.value);
-      $event.target.value = this.page;
+      $event.target.value = this.currentPage;
     },
     /**
      * 根据页码去指定页
@@ -153,7 +165,7 @@ export default {
     pageTo(page) {
       const cfg = this.config;
       page = +page;
-      if (page !== this.page) {
+      if (page !== this.currentPage) {
         if (page > cfg.totalPages) {
           cfg.page = cfg.totalPages;
         } else if (page < 1) {
