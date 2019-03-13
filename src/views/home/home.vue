@@ -1,6 +1,34 @@
 <template>
   <div>
-    <s-pagination :config="config.pagination"></s-pagination>
+    <h4>无配置的分页</h4>
+    <s-pagination></s-pagination>
+    <h4>配置数量的分页</h4>
+    <s-pagination :config="{total: 50}"></s-pagination>
+    <h4>配置了文案和数量的分页</h4>
+    <s-pagination :config="{total: 50, prevText: `上一页`,nextText: `下一页`}"></s-pagination>
+    <h4>满配置的分页</h4>
+    <s-pagination
+      :config="{
+          prevText: `前页`,
+          nextText: `后页`,
+          page: 1,
+          pageSize: 10,
+          total: 100,
+          layout: `total,sizes,jumper`
+        }"
+    ></s-pagination>
+    <h4>禁用的分页</h4>
+    <s-pagination
+      :config="{
+          prevText: `前页`,
+          nextText: `后页`,
+          page: 1,
+          pageSize: 10,
+          total: 100,
+          layout: `total,sizes,jumper`
+        }"
+      :disabled="true"
+    ></s-pagination>
     <s-select :config="config.select"></s-select>
     <s-dropdown :config="config.dropdown" @selected="dropdownSelected"></s-dropdown>
     <s-table :config="config.table"></s-table>
@@ -12,15 +40,6 @@ export default {
   data() {
     return {
       config: {
-        pagination: {
-          prevText: "前页",
-          nextText: "后页",
-          page: 1,
-          pageSize: 10,
-          total: 100,
-          layout: "total,sizes,jumper"
-        },
-
         select: {
           label: "",
           value: "",

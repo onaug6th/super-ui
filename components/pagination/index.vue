@@ -1,24 +1,24 @@
 <template>
   <div>
     <template v-if="layoutHas('total')">
-      <span class="total">{{'共' + config.total + '条'}}</span>
+      <span class="total">{{'共' + privateConfig.total + '条'}}</span>
     </template>
 
     <template v-if="layoutHas('sizes')"></template>
 
-    <ul class="pagination pagination-sm">
+    <ul class="pagination pagination-sm" :class="{'disabled': disabled}">
       <!-- 上一页按钮 -->
-      <li :class="{'disabled': (config.page <= 1)}" @click="prevPage()">
-        <a href="javascript:void(0)">{{ config.prevText }}</a>
+      <li :class="{'disabled': (isFirstPage || !privateConfig.total)}" @click="prevPage()">
+        <a>{{ privateConfig.prevText }}</a>
       </li>
       <!-- 上一页按钮介绍 -->
       <!-- 第一页按钮 -->
-      <li :class="{'active': config.page == 1}" @click="pageTo(1)" v-if="config.totalPages > 0">
+      <li :class="{'active': isFirstPage}" @click="pageTo(1)" v-if="privateConfig.totalPages > 0">
         <a>1</a>
       </li>
       <!-- 第一页按钮 -->
       <!-- 上五页按钮 -->
-      <li v-if="config.showPrevMore" @click="pageTo(config.page - 5)">
+      <li v-if="privateConfig.showPrevMore" @click="pageTo(currentPage - 5)">
         <a>...</a>
       </li>
       <!-- 上五页按钮 -->
@@ -27,30 +27,30 @@
         class="number"
         v-for="(item, index) in pageList"
         @click="pageTo(item)"
-        :class="{'active': config.page === item}"
+        :class="{'active': currentPage === item}"
         :key="index"
       >
         <a>{{ item }}</a>
       </li>
       <!-- 页码列表循环 -->
       <!-- 下五页按钮 -->
-      <li v-if="config.showNextMore" class="more btn-quicknext" @click="pageTo(config.page + 5)">
+      <li v-if="privateConfig.showNextMore" @click="pageTo(currentPage + 5)">
         <a>...</a>
       </li>
       <!-- 下五页按钮 -->
       <!-- 最后一页按钮 -->
       <li
         class="number"
-        :class="{'active': (config.page === config.totalPages)}"
-        @click="pageTo(config.totalPages)"
-        v-if="config.totalPages > 1"
+        :class="{'active': isLastPage}"
+        @click="pageTo(privateConfig.totalPages)"
+        v-if="privateConfig.totalPages > 1"
       >
-        <a>{{ config.totalPages }}</a>
+        <a>{{ privateConfig.totalPages }}</a>
       </li>
       <!-- 最后一页按钮 -->
       <!-- 下一页按钮 -->
-      <li :class="{'disabled': (config.page == config.totalPages)}" @click="nextPage()">
-        <a href="javascript:void(0)">{{ config.nextText }}</a>
+      <li :class="{'disabled': (isLastPage || !privateConfig.total)}" @click="nextPage()">
+        <a>{{ privateConfig.nextText }}</a>
       </li>
       <!-- 下一页按钮 -->
     </ul>
@@ -58,7 +58,7 @@
     <template v-if="layoutHas('jumper')">
       <span class="jumper">
         前往
-        <input type="number" min="1" :max="config.totalPages" @change="jumpTo($event)">
+        <input :disabled="disabled" ref="jumpInput" type="number" min="1" :max="privateConfig.totalPages" @change="jumpTo($event)" :value="privateConfig.page">
         页
       </span>
     </template>
@@ -69,6 +69,10 @@
 export default {
   name: "SPagination",
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     config: {
       type: Object,
       default() {
@@ -77,17 +81,17 @@ export default {
     }
   },
   created() {
-    const cfg = this.config;
+    const cfg = this.privateConfig;
     const default_config =  {
-        prevText: "前页",
-        nextText: "后页",
-        page: 1,
-        pageSize: 10,
-        total: 0,
-        totalPages: 0,
-        layout: ""
-      }
-
+      prevText: "前页",
+      nextText: "后页",
+      page: 1,
+      pageSize: 10,
+      total: 0,
+      totalPages: 0,
+      layout: ""
+    }
+    
     for(let i in default_config){
       !cfg[i] && (this.$set(cfg, i, default_config[i]));
     }
@@ -95,60 +99,62 @@ export default {
     cfg.totalPages = cfg.totalPages || Math.ceil(cfg.total / cfg.pageSize);
   },
   data() {
-    return {};
+    return {
+      privateConfig: this.config
+    };
   },
   watch: {
     currentPage() {
-      this.$emit("pageChange", this.config.page, this.config);
+      this.layoutHas("jumper") && (this.$refs["jumpInput"].value = this.privateConfig.page);
+      this.$emit("pageChange", this.privateConfig.page, this.privateConfig);
     }
   },
   computed: {
+    isFirstPage() {
+      return this.currentPage == 1;
+    },
+    isLastPage() {
+      return this.currentPage == this.privateConfig.totalPages;
+    },
     currentPage() {
-      return this.config.page;
+      return this.privateConfig.page;
     },
     pageList() {
-      if (!this.config.totalPages) {
+      if (!this.privateConfig.totalPages) {
         return [];
       }
       const pageList = this.makePagers(
-        this.config.page,
-        this.config.totalPages
+        this.privateConfig.page,
+        this.privateConfig.totalPages
       );
       return pageList;
     }
   },
   methods: {
-    setConfig(attr){
-      const that = this;
-      const cfg = that.config;
-      attr.forEach(item => {
-        that[item] && (cfg[item] = that[item]);
-      });
-    },
     /**
      * 布局包括
      * @param {string} name 布局名称
      */
     layoutHas(name) {
-      return this.config.layout && this.config.layout.includes(name);
+      return this.privateConfig.layout && this.privateConfig.layout.includes(name);
     },
     /**
      * 上一页
      */
     prevPage() {
-      if (this.config.page <= 1) {
+      if (this.isFirstPage) {
         return false;
       }
-      this.config.page -= 1;
+      this.pageTo(this.privateConfig.page - 1);
     },
     /**
      * 下一页
      */
     nextPage() {
-      if (this.config.page == this.config.totalPages) {
+      if (this.isLastPage) {
         return false;
       }
-      this.config.page += 1;
+      this.pageTo(this.privateConfig.page + 1);
     },
     /**
      * 跳转到
@@ -163,7 +169,10 @@ export default {
      * @param {number} page 页码
      */
     pageTo(page) {
-      const cfg = this.config;
+      if(this.disabled) {
+        return false;
+      }
+      const cfg = this.privateConfig;
       page = +page;
       if (page !== this.currentPage) {
         if (page > cfg.totalPages) {
@@ -181,8 +190,8 @@ export default {
      * @param {boolean} left
      */
     setMoreBtn(right, left) {
-      this.$set(this.config, "showPrevMore", right);
-      this.$set(this.config, "showNextMore", left);
+      this.$set(this.privateConfig, "showPrevMore", right);
+      this.$set(this.privateConfig, "showNextMore", left);
     },
     /**
      * 生成页码
