@@ -182,6 +182,9 @@ export default {
     },
     //  判断是否全选
     judegeNeedToSelectAll() {
+      if (!this.config.data.length) {
+        return;
+      }
       let answer = true;
       this.config.data.forEach((item, index) => {
         if (!item.isChecked) {

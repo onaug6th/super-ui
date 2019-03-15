@@ -56,7 +56,7 @@
     </ul>
 
     <template v-if="layoutHas('jumper')">
-      <span class="jumper">
+      <span class="jumper" :class="{'disabled': disabled}">
         前往
         <input :disabled="disabled" ref="jumpInput" type="number" min="1" :max="privateConfig.totalPages" @change="jumpTo($event)" :value="privateConfig.page">
         页
@@ -107,6 +107,12 @@ export default {
     currentPage() {
       this.layoutHas("jumper") && (this.$refs["jumpInput"].value = this.privateConfig.page);
       this.$emit("pageChange", this.privateConfig.page, this.privateConfig);
+    },
+    "privateConfig.total"() {
+      this.updateTotalPages();
+    },
+    "privateConfig.pageSize"() {
+      this.updateTotalPages();
     }
   },
   computed: {
@@ -131,6 +137,10 @@ export default {
     }
   },
   methods: {
+    updateTotalPages() {
+      const cfg = this.privateConfig;
+      cfg.totalPages = Math.ceil(cfg.total / cfg.pageSize);
+    },
     /**
      * 布局包括
      * @param {string} name 布局名称

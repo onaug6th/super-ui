@@ -1,6 +1,6 @@
 <template>
   <div role="presentation" class="dropdown open" v-clickoutside="clickoutside">
-    <a class="dropdown-toggle" role="button" @click="toggleMenu(true)">
+    <a class="dropdown-toggle" role="button" @click="toggleMenu()">
       {{countSelectText()}}
       <span class="caret"></span>
     </a>
@@ -41,12 +41,14 @@ export default {
   computed: {},
   created() {},
   methods: {
+    openMenu(type) {
+      this.isOpen = type; 
+    },
     /**
      * 切换打开菜单
-     * @param {string} type 类型
      */
-    toggleMenu(type) {
-      this.isOpen = type;
+    toggleMenu() {
+      this.isOpen = !this.isOpen;
     },
     /**
      * 选中某一行
@@ -60,7 +62,7 @@ export default {
         this.config.value = item.key;
         this.$emit("selected", item.key, item);
       }
-      this.toggleMenu(false);
+      this.openMenu(false);
     },
     /**
      * 计算显示的文字
@@ -76,7 +78,7 @@ export default {
      * 点击了绑定元素以外时的回调事件
      */
     clickoutside() {
-      this.toggleMenu(false);
+      this.openMenu(false);
     }
   }
 };

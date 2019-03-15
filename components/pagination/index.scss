@@ -113,6 +113,13 @@
     vertical-align: top;
     box-sizing: border-box;
     margin-left: 10px;
+
+    &.disabled{
+        input {
+            cursor: not-allowed;
+        }
+    }
+
     input {
         background-color: #fff;
         background-image: none;
