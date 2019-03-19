@@ -95,6 +95,9 @@ export default {
         table: {
           checkbox: true,
           clickToSelect: true,
+          data: [
+            { id: 1, type: "类型1", tag: "标签1", title: "标题1", bgUrl: "www.hao123.com", show: "是", homeShow: "否", read: "0", like: "1", createdAt: "2018-01-01"}
+          ],
           colOption: [
             {
               field: "id",
@@ -149,10 +152,7 @@ export default {
             },
             {
               field: "createdAt",
-              label: "时间",
-              formatter: (field, tr) => {
-                return `<div>${tr[field].split(" ")[0]}</div>`;
-              }
+              label: "时间"
             },
             {
               field: "operate",
@@ -168,7 +168,6 @@ export default {
               }
             }
           ],
-          data: [],
           pagination: {
             prevText: "前页",
             nextText: "后页",

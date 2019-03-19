@@ -57,6 +57,7 @@ export default {
     selectItem(item) {
       if (this.selected.key == item.key) {
         this.selected = "";
+        this.config.value = "";
       } else {
         this.selected = item;
         this.config.value = item.key;

@@ -5,10 +5,10 @@
       <thead>
         <tr>
           <th v-if="config.checkbox">
-            <input type="checkbox" @click="selectAll()" v-model="isCheckedAll">
+            <input type="checkbox" @click="selectAll()" v-model="isCheckedAll" :disabled="!config.data.length">
           </th>
 
-          <th v-for="(th, index) in config.colOption" :key="index" :data-field="th.field">
+          <th v-for="(th, index) in config.colOption" :key="index" :data-field="th.field" :class="'text-' + th.align">
             <template>{{ th.label }}</template>
           </th>
         </tr>
@@ -35,7 +35,7 @@
           </td>
 
           <template v-for="(td ,tdIndex) in config.colOption">
-            <td :key="tdIndex">
+            <td :key="tdIndex" :class="'text-' + td.align">
               <!-- jsx渲染 -->
               <template v-if="config.colOption[tdIndex]['jsxRender']">
                 <jsxDom
@@ -79,13 +79,7 @@ export default {
   props: {
     config: {
       type: Object,
-      required: true,
-      default() {
-        return {
-          colOption: [],
-          data: []
-        };
-      }
+      required: true
     }
   },
   components: {
@@ -110,6 +104,19 @@ export default {
       }
     }
   },
+  created() {
+    const default_config = {
+      checkbox: false,
+      clickToSelect: false,
+      data: [],
+      colOption: [],
+      pagination: []
+    };
+    for(let i in default_config) {
+      !this.config[i] && (this.$set(this.config, i, default_config[i]));
+    }
+    this.config.colOption.length && this.initColOption();
+  },
   data() {
     return {
       isCheckedAll: false,
@@ -133,6 +140,19 @@ export default {
     }
   },
   methods: {
+    initColOption() {
+      const colOption = this.config.colOption;
+      const default_colConfig = {
+        field: "",
+        label: "",
+        align: "center"
+      };
+      colOption.forEach(col => {
+        for(let i in default_colConfig){
+          !col[i] && (col[i] = default_colConfig[i]);
+        }
+      });
+    },
     /**
      * 查找该字段是否允许展示
      * @param { string } fieldName 字段名
