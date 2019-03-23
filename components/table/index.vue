@@ -4,7 +4,7 @@
       <!-- 表格头部 -->
       <thead>
         <tr>
-          <th v-if="config.checkbox">
+          <th v-if="config.checkbox" class="checkbox">
             <input type="checkbox" @click="selectAll()" v-model="isCheckedAll" :disabled="!config.data.length">
           </th>
 
@@ -30,7 +30,7 @@
           :data-index="trIndex"
           @click="rowClick($event, tr)"
         >
-          <td v-if="config.checkbox">
+          <td v-if="config.checkbox" class="checkbox">
             <input type="checkbox" v-model="tr.isChecked" data-checkbox="true">
           </td>
 

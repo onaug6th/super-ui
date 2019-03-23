@@ -17,6 +17,10 @@ th {
     margin-bottom: 20px
 }
 
+th.checkbox, td.checkbox {
+    text-align: center;
+}
+
 .table>tbody>tr>td,
 .table>tbody>tr>th,
 .table>tfoot>tr>td,

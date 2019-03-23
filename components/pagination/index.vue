@@ -4,7 +4,13 @@
       <span class="total">{{'共' + privateConfig.total + '条'}}</span>
     </template>
 
-    <template v-if="layoutHas('sizes')"></template>
+    <template v-if="layoutHas('sizes')">
+      <div class="sizes">
+        <s-pselect :config="{
+          list: size4KeyValue()
+        }"></s-pselect>
+      </div>
+    </template>
 
     <ul class="pagination pagination-sm" :class="{'disabled': disabled}">
       <!-- 上一页按钮 -->
@@ -80,6 +86,9 @@ export default {
       }
     }
   },
+  components: {
+    SPselect: () => import('../select')
+  },
   created() {
     const cfg = this.privateConfig;
     const default_config =  {
@@ -89,6 +98,7 @@ export default {
       pageSize: 10,
       total: 0,
       totalPages: 0,
+      sizes: [10, 20, 30, 40, 50, 100],
       layout: ""
     }
     
@@ -137,6 +147,14 @@ export default {
     }
   },
   methods: {
+    size4KeyValue() {
+      return this.privateConfig.sizes.map(item =>{
+        return {
+          key: item,
+          value: `${item}条/页`
+        }
+      });
+    },
     updateTotalPages() {
       const cfg = this.privateConfig;
       cfg.totalPages = Math.ceil(cfg.total / cfg.pageSize);
