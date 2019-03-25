@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pagination-layout">
     <template v-if="layoutHas('total')">
       <span class="total">{{'共' + privateConfig.total + '条'}}</span>
     </template>
@@ -7,6 +7,7 @@
     <template v-if="layoutHas('sizes')">
       <div class="sizes">
         <s-pselect :config="{
+          defaultKey: privateConfig.pageSize,
           list: size4KeyValue()
         }"></s-pselect>
       </div>

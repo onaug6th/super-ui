@@ -1,4 +1,10 @@
+.pagination-layout{
+    display: table;
+    clear: both;
+}
+
 .total {
+    float: left;
     display: inline-block;
     font-size: 13px;
     min-width: 35.5px;
@@ -12,11 +18,13 @@
 }
 
 .sizes{
+    float: left;
     width: 100px;
     display: inline-block;
 }
 
 .pagination {
+    float: left;
     display: inline-block;
     padding-left: 0 !important;
     margin: 0px;
@@ -110,6 +118,7 @@
 }
 
 .jumper {
+    float: left;
     display: inline-block;
     font-size: 13px;
     min-width: 35.5px;

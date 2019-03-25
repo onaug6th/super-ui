@@ -25,7 +25,7 @@ export default {
       default() {
         return {
           label: "请选择",
-          value: "",
+          defaultKey: "",
           list: []
         };
       }
@@ -35,11 +35,32 @@ export default {
   data() {
     return {
       isOpen: false,
-      selected: ""
+      selected: {
+        key: "",
+        value: ""
+      }
     };
   },
+  watch: {
+    "selected.key"() {
+      this.countSelectText();
+    }
+  },
   computed: {},
-  created() {},
+  mounted() {
+    const defaultKey = this.config.defaultKey;
+    if(defaultKey){
+      const defaultObj = this.config.list.filter(item =>{
+        if(item.key === defaultKey) {
+          return item;
+        }
+      })[0];
+      if(defaultObj){
+        this.selected.key = defaultKey;
+        this.selected.value = defaultObj.value;
+      }
+    }
+  },
   methods: {
     openMenu(type) {
       this.isOpen = type; 
@@ -56,11 +77,9 @@ export default {
      */
     selectItem(item) {
       if (this.selected.key == item.key) {
-        this.selected = "";
-        this.config.value = "";
+        this.selected = {};
       } else {
         this.selected = item;
-        this.config.value = item.key;
         this.$emit("selected", item.key, item);
       }
       this.openMenu(false);
