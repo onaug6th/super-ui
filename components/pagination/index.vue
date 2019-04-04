@@ -92,7 +92,7 @@ export default {
   },
   created() {
     const cfg = this.privateConfig;
-    const default_config =  {
+    const defaultConfig =  {
       prevText: "前页",
       nextText: "后页",
       page: 1,
@@ -103,8 +103,8 @@ export default {
       layout: ""
     }
     
-    for(let i in default_config){
-      !cfg[i] && (this.$set(cfg, i, default_config[i]));
+    for(let i in defaultConfig){
+      !cfg[i] && (this.$set(cfg, i, defaultConfig[i]));
     }
 
     cfg.totalPages = cfg.totalPages || Math.ceil(cfg.total / cfg.pageSize);

@@ -4,8 +4,8 @@
       {{countSelectText()}}
       <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" v-show="isOpen">
-      <li v-for="(item, index) in config.list" :key="index" @click="selectItem(item)">
+    <ul class="dropdown-menu" v-show="cfg.isOpen">
+      <li v-for="(item, index) in cfg.list" :key="index" @click="selectItem(item)">
         <div v-if="item.divider" role="separator" class="divider"></div>
         <a :data-index="index">{{item.value}}</a>
       </li>
@@ -21,65 +21,68 @@ export default {
   props: {
     config: {
       type: Object,
-      required: false,
-      default() {
-        return {
-          label: "请选择",
-          defaultKey: "",
-          list: []
-        };
-      }
+      required: true
     }
   },
   directives: { Clickoutside },
   data() {
     return {
-      isOpen: false,
-      selected: {
-        key: "",
-        value: ""
-      }
+      cfg: this.config
     };
   },
   watch: {
-    "selected.key"() {
+    "cfg.selected.key"() {
       this.countSelectText();
     }
   },
   computed: {},
-  mounted() {
-    const defaultKey = this.config.defaultKey;
+  created() {
+    const cfg = this.cfg;
+    const defaultConfig = {
+      label: "请选择",
+      isOpen: false,
+      selected: {
+        key: "",
+        value: ""
+      },
+      defaultKey: "",
+      list: []
+    }
+    for(let i in defaultConfig){
+      !cfg[i] && (this.$set(cfg, i, defaultConfig[i]));
+    }
+    const defaultKey = this.cfg.defaultKey;
     if(defaultKey){
-      const defaultObj = this.config.list.filter(item =>{
+      const defaultObj = this.cfg.list.filter(item =>{
         if(item.key === defaultKey) {
           return item;
         }
       })[0];
       if(defaultObj){
-        this.selected.key = defaultKey;
-        this.selected.value = defaultObj.value;
+        this.cfg.selected.key = defaultKey;
+        this.cfg.selected.value = defaultObj.value;
       }
     }
   },
   methods: {
     openMenu(type) {
-      this.isOpen = type; 
+      this.cfg.isOpen = type; 
     },
     /**
      * 切换打开菜单
      */
     toggleMenu() {
-      this.isOpen = !this.isOpen;
+      this.cfg.isOpen = !this.cfg.isOpen;
     },
     /**
      * 选中某一行
      * @param {object} item 当前行对象
      */
     selectItem(item) {
-      if (this.selected.key == item.key) {
-        this.selected = {};
+      if (this.cfg.selected.key == item.key) {
+        this.cfg.selected = {};
       } else {
-        this.selected = item;
+        this.cfg.selected = item;
         this.$emit("selected", item.key, item);
       }
       this.openMenu(false);
@@ -88,10 +91,10 @@ export default {
      * 计算显示的文字
      */
     countSelectText() {
-      if (this.selected.key) {
-        return this.selected.value;
+      if (this.cfg.selected && this.cfg.selected.key) {
+        return this.cfg.selected.value;
       } else {
-        return this.config.label || "请选择";
+        return this.cfg.label || "请选择";
       }
     },
     /**

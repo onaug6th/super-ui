@@ -1,5 +1,7 @@
 import Vue from 'vue';
 
+import { on } from "./index";
+
 //  绑定指令的节点列表
 const nodeList = [];
 //  上下文标记，用于删除回收
@@ -9,18 +11,6 @@ const ctx = '@@clickoutsideContext';
 let startClick;
 //  uuid
 let seed = 0;
-
-/**
- * 基于addEventListener封装的监听方法
- * @param {*} element
- * @param {*} event
- * @param {*} handler
- */
-const on = function (element, event, handler) {
-  if (element && event && handler) {
-    element.addEventListener(event, handler, false);
-  }
-};
 
 //  鼠标点击时，记录开始点击目标信息
 !Vue.prototype.$isServer && on(document, 'mousedown', e => {
