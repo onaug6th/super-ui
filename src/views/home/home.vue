@@ -25,6 +25,29 @@
     <div style="width: 200px">
       <s-select :config="config.select"></s-select>
     </div>
+
+    <h4>配置了默认值的选择框</h4>
+    <div style="width: 200px">
+      <s-select :config="{
+          label: '选择您的性别',
+          defaultKey: '1',
+          list: [
+            {
+              key: '1',
+              value: '男'
+            },
+            {
+              key: '0',
+              value: '0'
+            },
+            {
+              key: '2',
+              divider: true,
+              value: '未知'
+            }
+          ]
+        }"></s-select>
+    </div>
     
     <h4>下拉菜单</h4>
     <div style="width: 200px">
@@ -34,6 +57,13 @@
     <h4>表格</h4>
     <s-table :config="config.table"></s-table>
     
+    <h4>滚动条</h4>
+    <s-scrollbar>
+      <div style=" height: 300px; width: 200px; background: #ccc; padding: 10px; ">
+        <div style=" height: 800px; background: #555; ">
+        </div>
+      </div>
+    </s-scrollbar>
   </div>
 </template>
 
@@ -54,7 +84,7 @@ export default {
 
         select: {
           label: "",
-          value: "",
+          defaultKey: "",
           list: [
             {
               key: "1",

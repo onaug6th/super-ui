@@ -2,12 +2,14 @@ import pagination from './pagination';
 import table from './table';
 import dropdown from './dropdown';
 import select from './select';
+import scrollbar from './scrollbar';
 
 const components = [
   pagination,
   table,
   dropdown,
-  select
+  select,
+  scrollbar
 ];
 
 const install = Vue => {
@@ -28,7 +30,8 @@ export {
   pagination,
   table,
   dropdown,
-  select
+  select,
+  scrollbar
 }
 
 export default {
