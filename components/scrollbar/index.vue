@@ -59,6 +59,13 @@ function barWidth() {
   return scrollBarWidth;
 }
 
+function extend(to, _from) {
+  for (let key in _from) {
+    to[key] = _from[key];
+  }
+  return to;
+};
+
 function toObject(arr) {
   var res = {};
   for (let i = 0; i < arr.length; i++) {
@@ -102,13 +109,20 @@ export default {
   },
 
   render(h) {
+    
+    /**
+     * 凹槽
+     */
     let gutter = barWidth();
     let style = this.wrapStyle;
-
+    
+    //  如果存在凹槽
     if (gutter) {
+      //  设置凹槽属性
       const gutterWith = `-${gutter}px`;
       const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`;
-
+      
+      //  根据配置，生成样式
       if (Array.isArray(this.wrapStyle)) {
         style = toObject(this.wrapStyle);
         style.marginRight = style.marginBottom = gutterWith;
@@ -118,6 +132,8 @@ export default {
         style = gutterStyle;
       }
     }
+
+    //  生成视图
     const view = h(
       this.tag,
       {
@@ -127,6 +143,8 @@ export default {
       },
       this.$slots.default
     );
+
+    //  生成外壳，并监听滚动事件
     const wrap = (
       <div
         ref="wrap"
@@ -141,9 +159,18 @@ export default {
         {[view]}
       </div>
     );
-    let nodes;
 
+    let nodes;
+    
+    //  如果不使用原生滚动条
     if (!this.native) {
+      /**
+       * <div class="el-scrollbar__wrap">
+       *  <div class="el-scrollbar__view"></div>
+       * </div>
+       * <bar>
+       * <bar>
+       */
       nodes = [
         wrap,
         <Bar move={this.moveX} size={this.sizeWidth} />,
@@ -160,6 +187,15 @@ export default {
         </div>
       ];
     }
+    /**
+     * <div class="el-scrollbar">
+     * <div class="el-scrollbar__wrap">
+     *  <div class="el-scrollbar__view"></div>
+     * </div>
+     * <bar>
+     * <bar>
+     * </div>
+     */
     return h("div", { class: "el-scrollbar" }, nodes);
   },
 
@@ -198,77 +234,5 @@ export default {
 </script>
 
 <style>
-.el-select-dropdown .el-scrollbar.is-empty .el-select-dropdown__list {
-  padding: 0;
-}
-
-.el-time-spinner__wrapper
-  .el-scrollbar__wrap:not(.el-scrollbar__wrap--hidden-default) {
-  padding-bottom: 15px;
-}
-
-.el-scrollbar {
-  overflow: hidden;
-  position: relative;
-}
-
-.el-scrollbar:active > .el-scrollbar__bar,
-.el-scrollbar:focus > .el-scrollbar__bar,
-.el-scrollbar:hover > .el-scrollbar__bar {
-  opacity: 1;
-  transition: opacity 0.34s ease-out;
-}
-
-.el-scrollbar__wrap {
-  overflow: scroll;
-  height: 100%;
-}
-
-.el-scrollbar__wrap--hidden-default::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-.el-scrollbar__thumb {
-  position: relative;
-  display: block;
-  width: 0;
-  height: 0;
-  cursor: pointer;
-  border-radius: inherit;
-  background-color: rgba(144, 147, 153, 0.3);
-  transition: background-color 0.3s;
-}
-
-.el-scrollbar__thumb:hover {
-  background-color: rgba(144, 147, 153, 0.5);
-}
-
-.el-scrollbar__bar {
-  position: absolute;
-  right: 2px;
-  bottom: 2px;
-  z-index: 1;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 0.12s ease-out;
-}
-
-.el-scrollbar__bar.is-vertical {
-  width: 6px;
-  top: 2px;
-}
-
-.el-scrollbar__bar.is-vertical > div {
-  width: 100%;
-}
-
-.el-scrollbar__bar.is-horizontal {
-  height: 6px;
-  left: 2px;
-}
-
-.el-scrollbar__bar.is-horizontal > div {
-  height: 100%;
-}
+@import "./index.scss";
 </style>

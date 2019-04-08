@@ -58,7 +58,7 @@
     <s-table :config="config.table"></s-table>
     
     <h4>滚动条</h4>
-    <s-scrollbar>
+    <s-scrollbar ref="scrollBar">
       <div style=" height: 300px; width: 200px; background: #ccc; padding: 10px; ">
         <div style=" height: 800px; background: #555; ">
         </div>
@@ -208,6 +208,9 @@ export default {
         }
       }
     };
+  },
+  mounted() {
+    window.scrollBar = this.$refs.scrollBar;
   },
   methods: {
     dropdownSelected(key, obj) {

@@ -40,6 +40,7 @@ export default {
     name: 'Bar',
 
     props: {
+        //  垂直滚动条
         vertical: Boolean,
         size: String,
         move: Number
@@ -73,6 +74,7 @@ export default {
     },
 
     methods: {
+        //  按下滚动条
         clickThumbHandler(e) {
             // prevent click event of right button
             if (e.ctrlKey || e.button === 2) {
@@ -81,24 +83,27 @@ export default {
             this.startDrag(e);
             this[this.bar.axis] = (e.currentTarget[this.bar.offset] - (e[this.bar.client] - e.currentTarget.getBoundingClientRect()[this.bar.direction]));
         },
-
+        //  按下滚动条区域的某一个位置进行快速定位
         clickTrackHandler(e) {
             const offset = Math.abs(e.target.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]);
             const thumbHalf = (this.$refs.thumb[this.bar.offset] / 2);
             const thumbPositionPercentage = ((offset - thumbHalf) * 100 / this.$el[this.bar.offset]);
-
+            //  设置外壳的 scrollHeight 或 scrollWidth的新值。达到滚动的效果
             this.wrap[this.bar.scroll] = (thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100);
         },
-
+        //  开始滚动
         startDrag(e) {
+            //  停止后续的相同事件函数执行
             e.stopImmediatePropagation();
+            
             this.cursorDown = true;
-
+            //  监听鼠标移动事件
             on(document, 'mousemove', this.mouseMoveDocumentHandler);
+            //  监听鼠标松开事件
             on(document, 'mouseup', this.mouseUpDocumentHandler);
             document.onselectstart = () => false;
         },
-
+        //  按下滚动条，并且鼠标移动时
         mouseMoveDocumentHandler(e) {
             if (this.cursorDown === false) return;
             const prevPage = this[this.bar.axis];
@@ -111,7 +116,7 @@ export default {
 
             this.wrap[this.bar.scroll] = (thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100);
         },
-
+        //  按下滚动条，并且鼠标松开
         mouseUpDocumentHandler(e) {
             this.cursorDown = false;
             this[this.bar.axis] = 0;
