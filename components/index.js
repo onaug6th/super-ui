@@ -3,6 +3,7 @@ import table from './table';
 import dropdown from './dropdown';
 import select from './select';
 import scrollbar from './scrollbar';
+import loading from './loading';
 
 const components = [
   pagination,
@@ -19,6 +20,8 @@ const install = Vue => {
   components.forEach(Component => {
     Vue.component(Component.name, Component);
   });
+  Vue.use(loading.directive);
+  Vue.prototype.$loading = loading.service;
 }
 
 //  如果浏览器环境且拥有全局Vue，则自动安装组件
@@ -31,7 +34,8 @@ export {
   table,
   dropdown,
   select,
-  scrollbar
+  scrollbar,
+  loading
 }
 
 export default {
