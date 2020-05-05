@@ -48,6 +48,8 @@
           ]
         }"></s-select>
     </div>
+
+    <h2>以下为需要按需引入组件</h2>
     
     <h4>下拉菜单</h4>
     <div style="width: 200px">
@@ -56,14 +58,6 @@
 
     <h4>表格</h4>
     <s-table :config="config.table"></s-table>
-    
-    <h4>滚动条</h4>
-    <s-scrollbar ref="scrollBar">
-      <div style=" height: 300px; width: 200px; background: #ccc; padding: 10px; ">
-        <div style=" height: 800px; background: #555; ">
-        </div>
-      </div>
-    </s-scrollbar>
   </div>
 </template>
 

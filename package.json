@@ -1,19 +1,20 @@
 {
-  "name": "super-ui",
-  "version": "0.0.1",
+  "name": "@onaug6th/super-ui",
+  "version": "0.0.2",
   "description": "一闲下来就造轮子的轮子合集",
   "license": "MIT",
   "author": "onaug6th",
-  "main": "package/super-ui.umd.min.js",
+  "main": "lib/index/index.js",
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "dev:build": "vue-cli-service build",
+    "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "package": "vue-cli-service build --target lib --dest package components/index.js",
-    "package:publish": "npm run package && npm publish"
+    "lib:build": "vue-cli-service build",
+    "lib:publish": "npm run lib:build && npm publish"
   },
   "repository": "https://github.com/onaug6th/super-ui",
   "dependencies": {
+    "@onaug6th/super-ui": "^0.0.2",
+    "babel-plugin-import": "^1.13.0",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1"
   },
