@@ -17,6 +17,14 @@ let buildConfig = {
       libraryExport: "default",
       //  依赖名称
       library: "jerri-ui"
+    },
+    externals: {
+      vue: {
+        root: 'Vue',
+        commonjs: 'vue',
+        commonjs2: 'vue',
+        amd: 'vue',
+      },
     }
   },
   //  样式输出
